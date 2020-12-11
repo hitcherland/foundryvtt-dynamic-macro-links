@@ -68,6 +68,7 @@ function callEntityMacro(entity, ev) {
     const actor = game.actors.get(speaker.actor);
     const token = canvas.tokens.get(speaker.token);
     const character = game.user.character;
+    const command = macro.data.command;
     const args = [ev];
     
     try {
