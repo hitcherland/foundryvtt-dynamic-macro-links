@@ -8,7 +8,7 @@ class MacroEntity extends Macro {
   static get config() {
     return {
       baseEntity: MacroEntity,
-      collection: MacroEntityCollection,
+      collection: collection,
       embeddedEntities: {},
       label: "ENTITY.DELMacro"
     };
@@ -32,6 +32,8 @@ class MacroEntityCollection {
     }
 }
 
+const collection = new MacroEntityCollection();
+
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
     if(macro === null) {
@@ -48,7 +50,7 @@ function addEntityMacro(entity, macroID) {
     CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
         entityClass: MacroEntity,
-        collection: Macro.collection,
+        collection: collection,
         sidebarIcon: 'fas fa-play',
     };
 
