@@ -7,11 +7,11 @@ let unready = [];
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
     if(macro === null) {
-        console.err(`Macro with ID "${macroID}" not found for entity "${entity}"`);
+        console.error(`Macro with ID "${macroID}" not found for entity "${entity}"`);
         return;
     }
     if(macro.data.type !== 'script') {
-        console.err('Argument "macro" must be a Script Macro');
+        console.error('Argument "macro" must be a Script Macro');
         return;
     }
 
@@ -45,7 +45,7 @@ function callEntityMacro(entity, ev) {
     const macro = entityMacros[entity];
 
     if(macro === undefined) {
-        console.err(`Unexpected entity "${entity}"`);
+        console.error(`Unexpected entity "${entity}"`);
         return;
     }
 
