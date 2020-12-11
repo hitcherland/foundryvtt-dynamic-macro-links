@@ -77,9 +77,7 @@ function registerEntityMacro(entity) {
 }
 
 function onChange(value) {
-    const entities = JSON.parse(
-        game.settings.get('macro-to-del', 'macro-entities')
-    );
+    const entities = JSON.parse(value);
 
     Object.entries(entities).forEach((entry) => {
         const [entity, macro] = entry;
@@ -96,7 +94,6 @@ Hooks.once('init', () => {
         default: "{}",
         onChange: onChange
     });
-    onChange(game.settings.get('macro-to-del', 'macro-entities'));
 });
 
 Hooks.once('ready', () => {
@@ -104,5 +101,6 @@ Hooks.once('ready', () => {
     unready.forEach((entity) => {
         registerEntityMacro(entity);
     });
+    onChange(game.settings.get('macro-to-del', 'macro-entities'));
 });
 
