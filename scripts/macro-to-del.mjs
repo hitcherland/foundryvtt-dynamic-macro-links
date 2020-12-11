@@ -1,17 +1,7 @@
 const entityMacros = {};
-const collection = new Collection();
 
 let _ready = false;
 let unready = [];
-
-const pseudoCollection = {
-    get(id) {
-        return game.macros.get(id);
-    }
-    getName(id) {
-        return game.macros.getName(id);
-    }
-}
 
 class MacroEntity extends Macro {
     /** @override */
@@ -20,7 +10,7 @@ class MacroEntity extends Macro {
       baseEntity: Macro,
       collection: game.macros,
       embeddedEntities: {},
-      label: "ENTITY.Macro"
+      label: "ENTITY.TestMacro"
     };
   }
 
@@ -44,7 +34,7 @@ function addEntityMacro(entity, macroID) {
     CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
         entityClass: MacroEntity,
-        collection: pseudoCollection,
+        collection: Macro.collection,
         sidebarIcon: 'fas fa-play',
     };
 
