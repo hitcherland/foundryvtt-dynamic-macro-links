@@ -7,13 +7,29 @@ class MacroEntity extends Macro {
     /** @override */
   static get config() {
     return {
-      baseEntity: Macro,
-      collection: game.macros,
+      baseEntity: MacroEntity,
+      collection: MacroEntityCollection,
       embeddedEntities: {},
-      label: "ENTITY.TestMacro"
+      label: "ENTITY.DELMacro"
     };
   }
 
+  constructor() {
+      super(arguments);
+      this.entity = 'DELMacro';
+  }
+}
+
+class MacroEntityCollection {
+    get(id) {
+        const macro = game.macros.get(id);
+        return new MacroEntity(macro.data);
+    }
+
+    getName(name) {
+        const macro = game.macros.getName(name);
+        return new MacroEntity(macro.data);
+    }
 }
 
 function addEntityMacro(entity, macroID) {
