@@ -93,7 +93,8 @@ function callEntityMacro(entity, ev) {
     const token = canvas.tokens.get(speaker.token);
     const character = game.user.character;
     const command = macro.data.command;
-    const args = [ev];
+    const target = ev.currentTarget;
+    const args = [target.dataset.id];
     
     try {
       eval(command);
