@@ -1,0 +1,10 @@
+{
+    "macroToDEL": {
+        "Settings": {
+            "Macros": "Macros",
+            "MacrosHint": "Add macros here",
+            "Add": "Add a macro",
+            "Remove": "Remove a macro"
+        }
+    }
+}
