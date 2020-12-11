@@ -17,7 +17,7 @@ function addEntityMacro(entity, macroID) {
 
     entityMacros[entity] = macro;
     CONST.ENTITY_LINK_TYPES.push(entity);
-    CONFIG[name] = {
+    CONFIG[entity] = {
         entityClass: Macro,
         collection: Macro,
         sidebarIcon: 'fas fa-play',
