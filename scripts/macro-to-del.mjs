@@ -1,20 +1,8 @@
 const entityMacros = {};
 const collection = new Collection();
 
-class EntityMacro {
-    constructor(opt={}) {
-        let {
-            entity,
-            macro:macroID
-        } = opt;
-        this.entity = entity;
-        this.macroID = macroID;
-        this.macro = game.macros.get(macroID);
-
-        collection.set(entity, macro);
-    }
-}
-
+let _ready = false;
+let unready = [];
 
 function addEntityMacro(entity, macro) {
     if(macro.data.type !== 'script') {
@@ -29,6 +17,12 @@ function addEntityMacro(entity, macro) {
         collection: Macro,
         sidebarIcon: 'fas fa-play',
     };
+
+    if(_ready) {
+        registerEntityMacro(entity);
+    } else {
+        unready.push(entity);
+    }
 };
 
 function removeEntityMacro(entity) {
@@ -36,6 +30,10 @@ function removeEntityMacro(entity) {
     const index = CONST.ENTITY_LINK_TYPES.indexOf(entity);
     CONST.ENTITY_LINK_TYPES.splice(index, 1);
     delete CONFIG[entity];
+    $("body").off(
+        'click',
+        `a.entity-link[data-entity=${entity}]`,
+    );
 }
 
 function callEntityMacro(entity, ev) {
@@ -60,40 +58,43 @@ function callEntityMacro(entity, ev) {
     }
 }
 
-function registerEntityMacros() {
-    let body = $('body');
-    Object.keys(entityMacros).forEach(entity => {
-        body.on(
-            'click',
-            `a.entity-link[data-entity=${entity}]`,
-            function (ev) {
-                event.preventDefault();
-                event.stopPropagation();
-                callEntityMacro(entity, ev)
-                return false;
-            }
-        );
-    });
+function registerEntityMacro(entity) {
+    $('body').on(
+        'click',
+        `a.entity-link[data-entity=${entity}]`,
+        function (ev) {
+            event.preventDefault();
+            event.stopPropagation();
+            callEntityMacro(entity, ev)
+            return false;
+        }
+    );
 }
 
 Hooks.once('init', () => {
     game.settings.register("macro-to-del", "macro-entities", {
-        name: "macroToDEL.Settings.Macros",
-        hint: "macroToDEL.Settings.MacrosHint",
+        name: "Macros",
+        hint: "Map of Macro Name to Entity",
         scope: "world",
         config: true,
-        default: {},
-    });
+        default: "{}",
+        onChange: (value) => {
+            const entities = JSON.parse(
+                game.settings.get('macro-to-del', 'macro-entities')
+            );
 
-    const entities = game.settings.get('macro-to-del', 'macro-entities');
-
-    Object.entries(entities).forEach(function(entry) {
-        const [entity, macro] = entry;
-        addEntityMacro(entity, macro);
+            Object.entries(value).forEach((entry) => {
+                const [entity, macro] = entry;
+                addEntityMacro(entity, macro);
+            });
+        }
     });
 });
 
 Hooks.once('ready', () => {
-    registerEntityMacros();
+    _ready = true;
+    unready.forEach((entity) => {
+        registerEntityMacro(entity);
+    });
 });
 
