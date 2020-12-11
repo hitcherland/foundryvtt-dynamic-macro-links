@@ -17,10 +17,10 @@ function MacroProxyFactory(entity, macro) {
 
     class PseudoCollection {
         get(id) {
-            return {
+            return new MacroProxy({
                 id,
                 'name': entity
-            };
+            });
         }
 
         getName(id) { return this.get(id); }
