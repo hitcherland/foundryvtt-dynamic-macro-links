@@ -4,7 +4,8 @@ const collection = new Collection();
 let _ready = false;
 let unready = [];
 
-function addEntityMacro(entity, macro) {
+function addEntityMacro(entity, macroID) {
+    const macro = game.macros.get(macroID);
     if(macro.data.type !== 'script') {
         console.err('Argument "macro" must be a Script Macro');
         return;
