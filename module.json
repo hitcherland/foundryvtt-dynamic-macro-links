@@ -3,7 +3,7 @@
     "title": "Macro To Dynamic Entity Links",
     "description": "Allows macros to be called like dynamic entity links",
     "author": "hitcherland",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "minimumCoreVersion": "0.7.8",
     "compatibleCoreVersion": "0.7.8",
     "esmodules": [
