@@ -5,7 +5,7 @@ let unready = [];
 
 function MacroProxyFactory(entity, macro) {
     class MacroProxy extends Entity {
-        get config() {
+        static get config() {
             return {
                 baseEntity: MacroProxy,
                 embeddedEntities: {},
