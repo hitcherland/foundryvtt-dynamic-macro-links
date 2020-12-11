@@ -25,8 +25,7 @@ function MacroProxyFactory(entity, macro) {
         get(id) {
             return new MacroProxy({
                 'name': entity
-            }, {
-                id,
+                _id: id,
             });
         }
 
@@ -65,7 +64,7 @@ function addEntityMacro(entity, macroID) {
     } else {
         unready.push(entity);
     }
-};
+}
 
 function removeEntityMacro(entity) {
     delete entityMacros[entity];
