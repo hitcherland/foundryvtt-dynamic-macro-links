@@ -16,7 +16,7 @@ function MacroProxyFactory(entity, macro) {
 
         get sheet() {
             return {
-                render() {};
+                render: () => {}
             }
         }
     }
