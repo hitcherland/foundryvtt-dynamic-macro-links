@@ -4,6 +4,30 @@ const collection = new Collection();
 let _ready = false;
 let unready = [];
 
+const pseudoCollection = {
+    get(id) {
+        return game.macros.get(id);
+    }
+    getName(id) {
+        return game.macros.getName(id);
+    }
+}
+
+class MacroEntity extends Macro {
+    /** @override */
+  static get config() {
+    return {
+      baseEntity: Macro,
+      collection: game.macros,
+      embeddedEntities: {},
+      label: "ENTITY.Macro"
+    };
+  }
+
+}
+
+MacroEntity.collection = pseudoCollection;
+
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
     if(macro === null) {
@@ -17,9 +41,10 @@ function addEntityMacro(entity, macroID) {
 
     entityMacros[entity] = macro;
     CONST.ENTITY_LINK_TYPES.push(entity);
+    CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
-        entityClass: Macro,
-        collection: Macro,
+        entityClass: MacroEntity,
+        collection: pseudoCollection,
         sidebarIcon: 'fas fa-play',
     };
 
@@ -32,8 +57,10 @@ function addEntityMacro(entity, macroID) {
 
 function removeEntityMacro(entity) {
     delete entityMacros[entity];
-    const index = CONST.ENTITY_LINK_TYPES.indexOf(entity);
-    CONST.ENTITY_LINK_TYPES.splice(index, 1);
+    const link_index = CONST.ENTITY_LINK_TYPES.indexOf(entity);
+    CONST.ENTITY_LINK_TYPES.splice(link_index, 1);
+    const index = CONST.ENTITY_TYPES.indexOf(entity);
+    CONST.ENTITY_TYPES.splice(index, 1);
     delete CONFIG[entity];
     $("body").off(
         'click',
