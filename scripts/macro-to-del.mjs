@@ -1,8 +1,34 @@
 const entityMacros = {};
-const emptyCollection = new Collection();
 
 let _ready = false;
 let unready = [];
+
+function MacroProxyFactory(entity, macro) {
+    class MacroProxy extends Entity {
+        get config() {
+            return {
+                baseEntity: MacroProxy,
+                embeddedEntities: {},
+                label: `Entity.${Entity}Proxy`,
+                collection: pseudoCollection,
+            };
+        }
+    }
+
+    class PseudoCollection {
+        get(id) {
+            return {
+                id,
+                'name': entity
+            };
+        }
+
+        getName(id) { return this.get(id); }
+    }
+
+    const pseudoCollection = new PseudoCollection();
+    return [MacroProxy, pseudoCollection];
+}
 
 
 function addEntityMacro(entity, macroID) {
@@ -16,14 +42,14 @@ function addEntityMacro(entity, macroID) {
         return;
     }
 
+    const [cls, collection] = MacroProxyFactory(macro);
+
     entityMacros[entity] = macro;
     CONST.ENTITY_LINK_TYPES.push(entity);
     CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
-        entityClass: {
-            collection: emptyCollection 
-        },
-        collection: emptyCollection,
+        entityClass: cls,
+        collection: collection,
         sidebarIcon: 'fas fa-play',
     };
 
