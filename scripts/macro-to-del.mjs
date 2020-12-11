@@ -6,6 +6,10 @@ let unready = [];
 
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
+    if(macro === null) {
+        console.err(`Macro with ID "${macroID}" not found for entity "${entity}"`);
+        return;
+    }
     if(macro.data.type !== 'script') {
         console.err('Argument "macro" must be a Script Macro');
         return;
@@ -72,6 +76,17 @@ function registerEntityMacro(entity) {
     );
 }
 
+function onChange(value) {
+    const entities = JSON.parse(
+        game.settings.get('macro-to-del', 'macro-entities')
+    );
+
+    Object.entries(value).forEach((entry) => {
+        const [entity, macro] = entry;
+        addEntityMacro(entity, macro);
+    });
+}
+
 Hooks.once('init', () => {
     game.settings.register("macro-to-del", "macro-entities", {
         name: "Macros",
@@ -79,17 +94,9 @@ Hooks.once('init', () => {
         scope: "world",
         config: true,
         default: "{}",
-        onChange: (value) => {
-            const entities = JSON.parse(
-                game.settings.get('macro-to-del', 'macro-entities')
-            );
-
-            Object.entries(value).forEach((entry) => {
-                const [entity, macro] = entry;
-                addEntityMacro(entity, macro);
-            });
-        }
+        onChange: onChange
     });
+    onChange(game.settings.get('macro-to-del', 'macro-entities'));
 });
 
 Hooks.once('ready', () => {
