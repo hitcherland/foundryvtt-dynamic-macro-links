@@ -1,38 +1,9 @@
 const entityMacros = {};
+const emptyCollection = new Collection();
 
 let _ready = false;
 let unready = [];
 
-class MacroEntity extends Macro {
-    /** @override */
-  static get config() {
-    return {
-      baseEntity: MacroEntity,
-      collection: collection,
-      embeddedEntities: {},
-      label: "ENTITY.DELMacro"
-    };
-  }
-
-  constructor() {
-      super(arguments);
-      this.entity = 'DELMacro';
-  }
-}
-
-class MacroEntityCollection {
-    get(id) {
-        const macro = game.macros.get(id);
-        return new MacroEntity(macro.data);
-    }
-
-    getName(name) {
-        const macro = game.macros.getName(name);
-        return new MacroEntity(macro.data);
-    }
-}
-
-const collection = new MacroEntityCollection();
 
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
@@ -49,8 +20,10 @@ function addEntityMacro(entity, macroID) {
     CONST.ENTITY_LINK_TYPES.push(entity);
     CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
-        entityClass: MacroEntity,
-        collection: collection,
+        entityClass: {
+            collection: emptyCollection 
+        },
+        collection: emptyCollection,
         sidebarIcon: 'fas fa-play',
     };
 
