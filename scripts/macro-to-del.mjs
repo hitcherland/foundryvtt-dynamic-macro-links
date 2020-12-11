@@ -13,6 +13,12 @@ function MacroProxyFactory(entity, macro) {
                 collection: pseudoCollection,
             };
         }
+
+        get sheet() {
+            return {
+                render() {};
+            }
+        }
     }
 
     class PseudoCollection {
