@@ -16,8 +16,6 @@ class MacroEntity extends Macro {
 
 }
 
-MacroEntity.collection = pseudoCollection;
-
 function addEntityMacro(entity, macroID) {
     const macro = game.macros.get(macroID);
     if(macro === null) {
