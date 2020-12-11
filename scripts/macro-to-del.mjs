@@ -24,7 +24,7 @@ function MacroProxyFactory(entity, macro) {
     class PseudoCollection {
         get(id) {
             return new MacroProxy({
-                'name': entity
+                'name': entity,
                 _id: id,
             });
         }
