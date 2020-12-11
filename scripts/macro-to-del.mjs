@@ -81,7 +81,7 @@ function onChange(value) {
         game.settings.get('macro-to-del', 'macro-entities')
     );
 
-    Object.entries(value).forEach((entry) => {
+    Object.entries(entities).forEach((entry) => {
         const [entity, macro] = entry;
         addEntityMacro(entity, macro);
     });
