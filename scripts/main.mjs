@@ -3,38 +3,35 @@ const entityMacros = {};
 let _ready = false;
 let unready = [];
 
-function MacroProxyFactory(entity, macro) {
-    class MacroProxy extends Entity {
-        static get config() {
-            return {
-                baseEntity: MacroProxy,
-                embeddedEntities: {},
-                label: `Entity.${Entity}Proxy`,
-                collection: pseudoCollection,
-            };
-        }
-
-        get sheet() {
-            return {
-                render: () => {}
-            }
-        }
+class DynamicMacroLinkEntity extends Entity {
+    static get config() {
+        return {
+            baseEntity: DynamicMacroLinkEntity,
+            embeddedEntities: {},
+            label: `Entity.DynamicMacroLink`,
+            collection: pseudoCollection,
+        };
     }
 
-    class PseudoCollection {
-        get(id) {
-            return new MacroProxy({
-                'name': entity,
-                _id: id,
-            });
+    get sheet() {
+        return {
+            render: () => {}
         }
-
-        getName(id) { return this.get(id); }
     }
-
-    const pseudoCollection = new PseudoCollection();
-    return [MacroProxy, pseudoCollection];
 }
+
+class PseudoCollection {
+    get(id) {
+        return new DynamicMacroLinkEntity({
+            'name': entity,
+            _id: id,
+        });
+    }
+
+    getName(id) { return this.get(id); }
+}
+
+const pseudoCollection = new PseudoCollection();
 
 
 function addEntityMacro(entity, macroID) {
@@ -48,14 +45,12 @@ function addEntityMacro(entity, macroID) {
         return;
     }
 
-    const [cls, collection] = MacroProxyFactory(macro);
-
     entityMacros[entity] = macro;
     CONST.ENTITY_LINK_TYPES.push(entity);
     CONST.ENTITY_TYPES.push(entity);
     CONFIG[entity] = {
-        entityClass: cls,
-        collection: collection,
+        entityClass: DynamicMacroLinkEntity,
+        collection: pseudoCollection,
         sidebarIcon: 'fas fa-play',
     };
 
@@ -68,11 +63,16 @@ function addEntityMacro(entity, macroID) {
 
 function removeEntityMacro(entity) {
     delete entityMacros[entity];
-    const link_index = CONST.ENTITY_LINK_TYPES.indexOf(entity);
-    CONST.ENTITY_LINK_TYPES.splice(link_index, 1);
-    const index = CONST.ENTITY_TYPES.indexOf(entity);
-    CONST.ENTITY_TYPES.splice(index, 1);
     delete CONFIG[entity];
+
+    const link_index = CONST.ENTITY_LINK_TYPES.indexOf(entity);
+    if(link_index >= 0)
+        CONST.ENTITY_LINK_TYPES.splice(link_index, 1);
+    const index = CONST.ENTITY_TYPES.indexOf(entity);
+
+    if(index >= 0)
+        CONST.ENTITY_TYPES.splice(index, 1);
+
     $("body").off(
         'click',
         `a.entity-link[data-entity=${entity}]`,
@@ -116,8 +116,12 @@ function registerEntityMacro(entity) {
     );
 }
 
-function onChange(value) {
+function update(value) {
     const entities = JSON.parse(value);
+
+    Object.keys(entityMacros).forEach((entity) => {
+        removeEntityMacro(entity);
+    });
 
     Object.entries(entities).forEach((entry) => {
         const [entity, macro] = entry;
@@ -126,13 +130,13 @@ function onChange(value) {
 }
 
 Hooks.once('init', () => {
-    game.settings.register("macro-to-del", "macro-entities", {
+    game.settings.register("dynamic-macro-links", "macro-entities", {
         name: "Macros",
         hint: "Map of Macro Name to Entity",
         scope: "world",
         config: true,
         default: "{}",
-        onChange: onChange
+        onChange: update
     });
 });
 
@@ -141,6 +145,6 @@ Hooks.once('ready', () => {
     unready.forEach((entity) => {
         registerEntityMacro(entity);
     });
-    onChange(game.settings.get('macro-to-del', 'macro-entities'));
+    update(game.settings.get('dynamic-macro-links', 'macro-entities'));
 });
 

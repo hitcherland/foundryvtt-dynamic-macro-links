@@ -1,14 +1,14 @@
 {
-    "name": "macro-to-del",
-    "title": "Macro To Dynamic Entity Links",
-    "description": "Allows macros to be called like dynamic entity links",
+    "name": "dynamic-macro-links",
+    "title": "Dynamic Macro Links",
+    "description": "Enable Dynamic Entity Links that use arbitrary macros",
     "author": "hitcherland",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "minimumCoreVersion": "0.7.8",
     "compatibleCoreVersion": "0.7.8",
     "esmodules": [
-        "scripts/macro-to-del.mjs"
+        "scripts/main.mjs"
     ],
     "manifest": "https://raw.githubusercontent.com/hitcherland/foundryvtt-macro-to-del/main/module.json",
-    "download": "https://github.com/hitcherland/foundryvtt-macro-to-del/archive/v0.0.4.zip"
+    "download": "https://github.com/hitcherland/foundryvtt-macro-to-del/archive/v0.0.5.zip"
 }
