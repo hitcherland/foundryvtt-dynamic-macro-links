@@ -23,7 +23,7 @@ class DynamicMacroLink extends Entity {
 
     get macro() {
         const parts = this.macroId.split('.');
-        if(parts.length === 0) {
+        if(parts.length === 1) {
             return game.macros.get(this.macroId);
         } else {
             const [module, key, entityId] = parts;
