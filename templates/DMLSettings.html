@@ -1,0 +1,29 @@
+<form class="flexcol">
+    <div class="dml-list flexrow flex-center" style="min-height: 3em; border: 1px solid black; background: lightgray; align-items: center; justify-content: center;">
+        Drag Macros Here
+    </div>
+    {{#each dmlItems as |dml index|}}
+        <div class="dml-item" name="dml.{{index}}" data-index="{{index}}" style="border: 1px solid black; padding: 5px; margin: 5px;">
+            <a class="dml-remove flexrow"><i class="fas fa-trash" style="text-align: right; padding: 5px;"></i> Delete</a>
+            <div class="flexrow" style="display: flex;">
+                <label class="flex1" style="padding: 5px; font-weight: bold">Entity Name: </label>
+                <input type="text" data-index="{{index}}" name="entity" value="{{dml.entity}}">
+            </div>
+
+            <div class="flexrow">
+                <label class="flex1" style="padding: 5px; font-weight: bold;">Macro: </label>
+                <div class="macro flexrow" style="align-items: center;" data-id="{{dml.macroId}}" draggable="true" >
+                    <img class="profile flex0" title="{{dml.macro.data.name}}" src="{{dml.macro.data.img}}" style="width: 48px; height:48px"/>
+                    <span style="padding: 5px;  align-items: center; justify-content: center;">{{dml.macro.data.name}}</span>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+
+
+
+    <div class="flexrow ">
+        <button type="button" data-type="cancel">Cancel</button>
+        <button type="button" data-type="submit">Submit</button>
+    </div>
+</form>
