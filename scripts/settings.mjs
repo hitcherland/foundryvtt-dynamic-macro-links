@@ -1,16 +1,14 @@
-import DynamicMacroLink from './dml.mjs';
-
 const module_name = "dynamic-macro-links";
 
 const default_dml = [{
-    entity: "ActivateScene",
-    macroId: "dynamic-macro-links.dml-macros.QEkDw8G6LHzENtt4"
+    document: "ActivateScene",
+    macroId: "Compendium.dynamic-macro-links.dml-macros.QEkDw8G6LHzENtt4"
 }, {
-    entity: "PlayPlaylist",
-    macroId: "dynamic-macro-links.dml-macros.YOWUSenN4K2mM2LF"
+    document: "PlayPlaylist",
+    macroId: "Compendium.dynamic-macro-links.dml-macros.YOWUSenN4K2mM2LF"
 }, {
-    entity: "PlayOnlyPlaylist",
-    macroId: "dynamic-macro-links.dml-macros.8YQe4mFPekNR4yGa"
+    document: "PlayOnlyPlaylist",
+    macroId: "Compendium.dynamic-macro-links.dml-macros.8YQe4mFPekNR4yGa"
 }];
 
 class DMLSettingsApplication extends FormApplication {
@@ -35,14 +33,14 @@ class DMLSettingsApplication extends FormApplication {
         html.find('button[data-type="submit"]').click(this._onSubmit.bind(this));
     }
 
-    _onDMLCreate({entity, macroId}) {
+    _onDMLCreate({document, macroId}) {
         if(this.object.changes === undefined) {
             this.object.changes = [];
         }
 
         this.object.changes.push({
             type: "add",
-            entity,
+            document,
             macroId,
         });
         
@@ -65,66 +63,54 @@ class DMLSettingsApplication extends FormApplication {
     }
 
     async getData(options) {
-        const current = await game.settings.get(module_name, "dml-pairs");
-        const dmlItems = current.map(dml => {
-            return new DynamicMacroLink({
-                entity: dml.entity,
-                macroId: dml.macroId
-            })
-        });
+        const dmlPairs = game.settings.get(module_name, "dml-pairs");
 
         const changes = this.object.changes || [];
 
-        changes.forEach(({type, index, entity, macroId}) => {
+        changes.forEach(({type, index, document, macroId}) => {
             switch(type) {
                 case "add":
-                    dmlItems.push(new DynamicMacroLink({
-                        entity,
+                    dmlPairs.push({
+                        document,
                         macroId
-                    }));
+                    });
                     break;
                 case "remove":
-                    dmlItems.splice(index, 1);
+                    dmlPairs.splice(index, 1);
                     break;
                 case "modify":
-                    if(entity !== undefined)
-                        dmlItems[index].data.entity = entity;
+                    if(document !== undefined)
+                        dmlPairs[index].document = document;
 
                     if(macroId !== undefined)
-                        dmlItems[index].data.macroID = macroId;
+                        dmlPairs[index].macroID = macroId;
                     break;
                 default:
                     break;
             }
         });
 
-        const macros = await Promise.all(dmlItems.map(x => x.macro));
-        const items = dmlItems.map((dml, i) => {
+        const macros = await Promise.all(dmlPairs.map(x => fromUuid(x.macroId)));
+        const items = dmlPairs.map((dml, i) => {
             return {
-                entity: dml.entity,
+                document: dml.document,
                 macroId: dml.macroId,
                 macro: macros[i],
             };
         });
 
         return {
-            dmlItems: items
+            dmlPairs: items
         };
     }
 
     async _updateObject(ev, formData) {
         const data = await this.getData();
-        const dmlItems = data.dmlItems;
+        const dmlPairs = data.dmlPairs;
         if(this.object.changes === undefined || this.object.changes.length === 0) {
             return;
         }
-        DynamicMacroLink.updateDML(dmlItems);
-        game.settings.set(module_name, "dml-pairs", DynamicMacroLink.collection.map(({entity, macroId}) => {
-            return {
-                entity,
-                macroId,
-            };
-        }));
+        game.settings.set(module_name, "dml-pairs", dmlPairs);
     }
 
     _onChangeInput(event) {
@@ -148,7 +134,7 @@ class DMLSettingsApplication extends FormApplication {
         this.object.changes.push(data);
     }
 
-    _onDrop(event) {
+    async _onDrop(event) {
         const data = JSON.parse(event.dataTransfer.getData('text/plain'));
         const {
             type,
@@ -160,37 +146,32 @@ class DMLSettingsApplication extends FormApplication {
             return;
         }
 
-        if(pack !== undefined) {
-            this._onDMLCreate({
-                entity: "",
-                macroId: `${pack}.${id}`,
-            });
-        } else {
-            this._onDMLCreate({
-                entity: "",
-                macroId: id,
-            });
-        }
+        let macroId = `Macro.${id}`;
+
+        if(pack !== undefined)
+            macroId = `Compendium.${pack}.${id}`;
+        
+        const macro = await fromUuid(macroId);
+        this._onDMLCreate({
+            document: macro.name,
+            macroId,
+        });
     }
 }
 
 function register() {
-    DynamicMacroLink.updateDML(default_dml);
     game.settings.register(module_name, "dml-pairs", {
         name: "DML Pairs",
         scope: "world",
         default: default_dml,
         type: Object,
         config: false,
-        onChange: (v) => {
-            DynamicMacroLink.updateDML(v);
-        },
     });
 
     game.settings.registerMenu(module_name, "dml-pairs", {
         name: "Modify DML",
         label: "Open Editor",
-        hint: "Adjust entity names that call macros",
+        hint: "Adjust document names that call macros",
         icon: "fas fa-bars",
         type: DMLSettingsApplication,
         restricted: true,

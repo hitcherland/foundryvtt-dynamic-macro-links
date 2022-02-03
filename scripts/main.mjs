@@ -1,5 +1,5 @@
 import {register as registerDML} from './settings.mjs';
-import {onReady as onReadyDML} from './dml.mjs';
+import {swapTextEditors} from './DMLTextEditor.mjs';
 
 Hooks.once('init', registerDML);
-Hooks.once('ready', onReadyDML);
+Hooks.once('init', swapTextEditors);

@@ -44,7 +44,7 @@ For example, the macro command for `ActivateScene` is:
     }
 
 The variable `args` is a special environment variable that is defined when the Dynamic Macro Link is clicked.
-Currently it only contains the id in the Dynamic Entity Link (i.e. `0Mib4ysc99LwTpAa` from our `@ActivateScene[0Mib4ysc99LwTpAa]{My Scene}` example earlier).
+It contains an array produced by splitting the id by a semicolon, i.e. `0Mib4ysc99LwTpAa;test` => `['0Mib4ysc99LwTpAa', test']`.
 
 Once you've created your new macro, open up the settings tab and click "Configure Settings" followed by "Module Settings". Here we can see the 
 Dynamic Macro Links settings group. Click "Open Editor" here, and a new window should open up. Simply drag your newly created macro onto the box that says
@@ -56,5 +56,3 @@ Note: This module won't allow overlap of Entity Names with existing entity names
 # Future Work:
 
 * Allow users to define a custom Font Awesome icon for their Dynamic Module Link buttons.
-* Split `args` by semicolon (or something else) to allow users to pass arguments in the journal.
-  * this could be useful for a FadeInPlaylist macro, which would need a timeout. Usage would be something like `@FadeInPlaylist[0Mib4ysc99LwTpAa;5]{Fade In Slowly}`.
