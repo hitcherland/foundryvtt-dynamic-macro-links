@@ -5,7 +5,7 @@
     "author": "hitcherland",
     "version": "0.2.0",
     "minimumCoreVersion": "0.7.8",
-    "compatibleCoreVersion": "0.9.249",
+    "compatibleCoreVersion": "9.249",
     "esmodules": [
         "scripts/main.mjs",
         "scripts/dml.mjs",
