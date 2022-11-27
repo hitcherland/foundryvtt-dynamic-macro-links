@@ -3,18 +3,17 @@
     "title": "Dynamic Macro Links",
     "description": "Enable Dynamic Entity Links that use arbitrary macros",
     "author": "hitcherland",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "minimumCoreVersion": "0.7.8",
     "compatibleCoreVersion": "9.249",
     "esmodules": [
         "scripts/main.mjs",
-        "scripts/dml.mjs",
         "scripts/settings.mjs"
     ],
-    "url": "https://github.com/hitcherland/foundryvtt-dynamic-macro-links",
-    "manifest": "https://raw.githubusercontent.com/hitcherland/foundryvtt-dynamic-macro-links/main/module.json",
-    "download": "https://github.com/hitcherland/foundryvtt-dynamic-macro-links/archive/v0.2.0.zip",
-    "readme": "https://raw.githubusercontent.com/hitcherland/foundryvtt-dynamic-macro-links/main/README.md",
+    "url": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links",
+    "manifest": "https://raw.githubusercontent.com/william-isley-3rd/foundryvtt-dynamic-macro-links/main/module.json",
+    "download": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links/archive/v0.2.0.zip",
+    "readme": "https://raw.githubusercontent.com/william-isley-3rd/foundryvtt-dynamic-macro-links/main/README.md",
     "packs": [{
         "name": "dml-macros",
         "label": "DML Macros",
