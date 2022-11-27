@@ -8,11 +8,12 @@
     "compatibleCoreVersion": "9.249",
     "esmodules": [
         "scripts/main.mjs",
+        "scripts/dml.mjs",
         "scripts/settings.mjs"
     ],
     "url": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links",
     "manifest": "https://raw.githubusercontent.com/william-isley-3rd/foundryvtt-dynamic-macro-links/main/module.json",
-    "download": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links/archive/v0.2.2.zip",
+    "download": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links/archive/v0.2.3.zip",
     "readme": "https://raw.githubusercontent.com/william-isley-3rd/foundryvtt-dynamic-macro-links/main/README.md",
     "packs": [{
         "name": "dml-macros",
