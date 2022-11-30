@@ -90,7 +90,7 @@ class DMLSettingsApplication extends FormApplication {
             }
         });
 
-        const macros = await Promise.all(dmlPairs.map(x => fromUuid(x.macroId)));
+        const macros = await Promise.all(dmlPairs.map(x => fromUuidSync(x.macroId)));
         const items = dmlPairs.map((dml, i) => {
             return {
                 document: dml.document,
@@ -137,21 +137,21 @@ class DMLSettingsApplication extends FormApplication {
     async _onDrop(event) {
         const data = JSON.parse(event.dataTransfer.getData('text/plain'));
         const {
-            type,
-            pack,
-            id
-        } = data;
-
+			type,
+            // pack,
+            id,
+			slot
+        } = await data;
+		// console.log(data);
         if(type !== "Macro") {
             return;
         }
 
-        let macroId = `Macro.${id}`;
-
-        if(pack !== undefined)
-            macroId = `Compendium.${pack}.${id}`;
-        
-        const macro = await fromUuid(macroId);
+        // let macroId = `Macro.${id}`;
+		let macroId = data.uuid;
+        // if(pack !== undefined)
+        //     macroId = `Compendium.${pack}.${id}`;
+        const macro = await fromUuidSync(macroId);
         this._onDMLCreate({
             document: macro.name,
             macroId,
