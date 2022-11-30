@@ -49,8 +49,8 @@ class DMLTextEditor extends TextEditor {
     };
 
 
-    static _createContentLink(match, type, target, name) {
-        // Prepare replacement data
+    static _createContentLink([match, type, target, name]) {
+		// Prepare replacement data
         const data = {
             cls: ["entity-link", "content-link"],
             icon: null,
@@ -62,7 +62,7 @@ class DMLTextEditor extends TextEditor {
         const macroDict = Object.assign({}, ...macros.map(x => ({[x.document]: x.macroId})));
 
         if (macroDict[type] === undefined) {
-            return super._createContentLink(match, type, target, name);
+            return super._createContentLink([match, type, target, name]);
         }
 
         // Construct the formed link
@@ -72,25 +72,27 @@ class DMLTextEditor extends TextEditor {
 
         a.dataset.macroId = macroDict[type];
         a.dataset.id = target;
-        a.innerHTML = `<i class="${data.icon}"></i> ${data.name}`;
+        // a.innerHTML = `<i class="${icon}"></i> ${name}`;
+		a.innerHTML = `<i class="${data.icon}"></i> ${data.name}`;
         return a;
     }
 
     static async _onClickContentLink(event) {
         event.preventDefault();
         const a = event.currentTarget;
+
         let id = a.dataset.id;
 
         if (a.dataset.macroId === undefined) {
             return super._onClickContentLink(event);
         }
 
-        const macro = await fromUuid(a.dataset.macroId);
+        const macro = await fromUuidSync(a.dataset.macroId);
         const args = id.split(';');
 
         function handleMacro(macro) {
             try {
-                eval(macro.data.command);
+                eval(macro.command);
             } catch (err) {
                 ui.notifications.error(`There was an error in your macro syntax. See the console (F12) for details`);
                 console.error(err);
