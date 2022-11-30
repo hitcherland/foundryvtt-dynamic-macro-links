@@ -8,7 +8,6 @@
     "compatibleCoreVersion": "9.249",
     "esmodules": [
         "scripts/main.mjs",
-        "scripts/dml.mjs",
         "scripts/settings.mjs"
     ],
     "url": "https://github.com/william-isley-3rd/foundryvtt-dynamic-macro-links",
