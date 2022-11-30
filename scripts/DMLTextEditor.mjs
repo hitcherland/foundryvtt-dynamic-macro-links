@@ -24,7 +24,7 @@ class DMLTextEditor extends TextEditor {
         if (documents) {
             if (updateTextArray) text = this._getTextNodes(html);
             const macroNames = game.settings.get('dynamic-macro-links', 'dml-pairs').map(x => x.document);
-            const documentTypes = CONST.DOCUMENT_LINK_TYPES.concat("Compendium", ...macroNames);
+            const documentTypes = CONST.DOCUMENT_LINK_TYPES.concat("UUID", "Compendium", ...macroNames);
             const rgx = new RegExp(`@(${documentTypes.join("|")})\\[([^\\]]+)\\](?:{([^}]+)})?`, 'g');
             updateTextArray = this._replaceTextContent(text, rgx, this._createContentLink);
         }
