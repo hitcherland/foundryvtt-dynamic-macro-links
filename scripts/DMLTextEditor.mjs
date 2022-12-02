@@ -1,6 +1,5 @@
 class DMLTextEditor extends TextEditor {
     static enrichHTML(content, { secrets = false, documents = true, links = true, rolls = true, rollData, ...options } = {}) {
-
         // Create the HTML element
         const html = document.createElement("div");
         html.innerHTML = String(content || "");
@@ -60,10 +59,20 @@ class DMLTextEditor extends TextEditor {
         let broken = false;
         const macros = game.settings.get('dynamic-macro-links', 'dml-pairs');
         const macroDict = Object.assign({}, ...macros.map(x => ({[x.document]: x.macroId})));
-
-        if (macroDict[type] === undefined) {
+		
+		if ((macroDict[type] === undefined) && (target[0] === '.')){
+			// super._createContentLink breaks when sending a relative path. 
+			// There's probably a better way to do this... 
+			let temp_id = target.substring(1);
+			let link_parent = game.journal.find(j => j.pages.some(p => p.id===temp_id));
+			let page_id = link_parent.pages.find(p => p.id===temp_id);
+			return super._createContentLink([match, type, page_id.uuid, name]);
+		}
+        else if (macroDict[type] === undefined) {
+			// Use the normal way to construct links. Works for link that are not relative. 
             return super._createContentLink([match, type, target, name]);
         }
+		
 
         // Construct the formed link
         const a = document.createElement('a');
