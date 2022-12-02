@@ -7,7 +7,7 @@ This module is inspired by Foundry VTT's own Dynamic Entity Links and [Forien's 
 
 # Installation
 
-Open Foundry VTT, and enter the module management tab. Import a new module with the tab `https://raw.githubusercontent.com/william-isley-3rd/foundryvtt-dynamic-macro-links/main/module.json`, and enable it in the game.
+Open Foundry VTT, and enter the module management tab. Import a new module with the tab `https://raw.githubusercontent.com/hitcherland/foundryvtt-dynamic-macro-links/main/module.json`, and enable it in the game.
 
 # Usage
 
