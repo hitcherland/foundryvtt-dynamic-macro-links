@@ -1,6 +1,6 @@
 {
-    "name": "dynamic-macro-links-v10",
-    "title": "Dynamic Macro Links v10",
+    "name": "dynamic-macro-links",
+    "title": "Dynamic Macro Links",
     "description": "Enable Dynamic Entity Links that use arbitrary macros",
     "authors": ["hitcherland","william-isley-3rd"],
     "version": "0.2.8",
