@@ -1,14 +1,14 @@
-const module_name = "dynamic-macro-links-v10";
+const module_name = "dynamic-macro-links";
 
 const default_dml = [{
     document: "ActivateScene",
-    macroId: "Compendium.dynamic-macro-links-v10.dml-macros.QEkDw8G6LHzENtt4"
+    macroId: "Compendium.dynamic-macro-links.dml-macros.QEkDw8G6LHzENtt4"
 }, {
     document: "PlayPlaylist",
-    macroId: "Compendium.dynamic-macro-links-v10.dml-macros.YOWUSenN4K2mM2LF"
+    macroId: "Compendium.dynamic-macro-links.dml-macros.YOWUSenN4K2mM2LF"
 }, {
     document: "PlayOnlyPlaylist",
-    macroId: "Compendium.dynamic-macro-links-v10.dml-macros.8YQe4mFPekNR4yGa"
+    macroId: "Compendium.dynamic-macro-links.dml-macros.8YQe4mFPekNR4yGa"
 }];
 
 class DMLSettingsApplication extends FormApplication {
