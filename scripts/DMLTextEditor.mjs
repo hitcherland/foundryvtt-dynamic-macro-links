@@ -48,7 +48,7 @@ class DMLTextEditor extends TextEditor {
             rollData = rollData instanceof Function ? rollData() : (rollData || {});
             if (updateTextArray) text = this._getTextNodes(html);
             const rgx = /\[\[(\/[a-zA-Z]+\s)?(.*?)([\]]{2,3})(?:{([^}]+)})?/gi;
-            updateTextArray = this._replaceTextContent(text, rgx, (...args) => this._createInlineRoll(...args, rollData));
+            updateTextArray = this._replaceTextContent(text, rgx, (...args) => this._createInlineRoll(...args, rollData, {async=true}));
         }
 
         // Return the enriched HTML
